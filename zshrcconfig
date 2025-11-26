@@ -1,4 +1,3 @@
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -110,11 +109,11 @@ alias scfg="source ~/.zshrc "
 
 eval "$(oh-my-posh init zsh --config ~/.oh-my-posh/themes/neko.omp.json)"
 alias ifconfig='sudo ifconfig'
+alias .='cd .'
 alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
-alias l='ls -lart --block-size=M'
 alias h='history'
 alias autoremove='sudo apt-get autoremove -y'
 alias autoclean='sudo apt-get autoclean -y'
@@ -193,7 +192,7 @@ extract(){ if [ -z "$1" ]; then echo "Usage: extract <file>"; elif [ -f "$1" ]; 
 lowercase_extensions(){ for file in *.*; do ext="${file##*.}"; lower_ext=$(echo "$ext" | tr '[:upper:]' '[:lower:]'); if [[ "$ext" != "$lower_ext" ]]; then mv "$file" "${file%.*}.$lower_ext"; fi; done; }
 
 docker_run(){ docker build -t temp-app:latest . && if [ -n "$1" ]; then docker run --rm -it -p "$1":1337 temp-app:latest; else docker run --rm -it temp-app:latest; fi; }
-chpwd() { ls --color=auto; }
+
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -216,7 +215,7 @@ alias elfxtract="python3 /home/zahard/Documents/CSCV/pwnable/heapnote/heapnote/e
 
 hash -d pwnkey=~/.ssh/pwncollege
 
-alias xmod='for f in *; do [[ -f "$f" && -x "$f" ]] || file "$f" | grep -qi "ELF" && chmod +x "$f"; done' 
+alias xmod='for f in *; do [[ -f "$f" && -x "$f" ]] || file "$f" | grep -qi "ELF" && chmod +x "$f"; done'
 alias ida='/home/zahard/ida-pro-9.0/ida'
 alias fixlf='find . -type f -name "*.py" -exec sed -i "s/\r$//" {} +'
 alias pwninit="python3 ~/tools/pwninit-py/pwninit.py"
@@ -226,11 +225,7 @@ alias fixhist='mv ~/.zsh_history ~/.zsh_history_bad 2>/dev/null && strings ~/.zs
 neofetch --iterm2 ~/Pictures/wtf-removebg-preview.png
 
 ##### === EXTRA TERMINAL POWER (APPEND ONLY) === #####
-if command -v fzf >/dev/null 2>&1; then
-  if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
-    source /usr/share/doc/fzf/examples/key-bindings.zsh
-  fi
-fi
+# (fzf keybindings được cấu hình ở block "2) fzf keybindings" bên dưới)
 
 # 2) Remap phím cho widget của fzf
 if [[ $- == *i* ]]; then
@@ -250,6 +245,7 @@ if [[ $- == *i* ]]; then
     bindkey '^R' fzf-history-widget
   fi
 fi
+
 # 1) Zsh options / history cho sướng tay
 HISTSIZE=100000
 SAVEHIST=100000
@@ -278,12 +274,7 @@ if command -v zoxide >/dev/null 2>&1; then
 fi
 
 # 4) ls / cat / find xịn hơn nếu có cài
-if command -v eza >/dev/null 2>&1; then
-  alias ls='eza --group-directories-first --icons'
-  alias ll='eza -lh --group-directories-first --icons'
-  alias la='eza -lah --group-directories-first --icons'
-fi
-
+# (eza được cấu hình ở các block eza phía dưới)
 if command -v batcat >/dev/null 2>&1; then
   alias cat='batcat --paging=never'
 elif command -v bat >/dev/null 2>&1; then
@@ -307,11 +298,26 @@ hgrep(){ history | grep -i "$@"; }
 alias ports='ss -tulnp'
 
 # info IP local + public
-myip(){
+myip() {
   echo "Local:"
-  ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '^127\.' | sort -u
+  if command -v ip >/dev/null 2>&1; then
+    ip -4 addr show dev eth0 2>/dev/null \
+      | awk '/inet /{print $2}' \
+      | cut -d/ -f1
+  elif command -v ifconfig >/dev/null 2>&1; then
+    ifconfig eth0 2>/dev/null \
+      | awk '/inet /{print $2}' \
+      | head -n1
+  fi
+
   echo "Public:"
-  curl -s https://ipinfo.io/ip 2>/dev/null || curl -s https://ifconfig.me 2>/dev/null || echo "(offline?)"
+  local pub_ip
+  pub_ip=$(
+    curl -s https://ipinfo.io/ip 2>/dev/null \
+      || curl -s https://ifconfig.me 2>/dev/null \
+      || echo "(offline?)"
+  )
+  echo "$pub_ip"
 }
 
 # 6) CTF helpers
@@ -336,13 +342,6 @@ gdbpwn(){
   fi
   gdb -q "$@"
 }
-if command -v fzf >/dev/null 2>&1; then
-  if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
-    source /usr/share/doc/fzf/examples/key-bindings.zsh
-  elif [ -f ~/.fzf.zsh ]; then
-    source ~/.fzf.zsh
-  fi
-fi
 
 ##### === BINARY QUICK INFO (OFFSETS & LIBC) – SHORT HEX & POP RDI === #####
 bininfo() {
@@ -423,7 +422,7 @@ bininfo() {
     else
       printf '  %s"/bin/sh"@binary:%s %s<not found>%s\n' \
         "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
-    fi
+      fi
   else
     printf '  %sstrings not found, skip "/bin/sh" in binary.%s\n' "$C_WARN" "$C_RESET"
   fi
@@ -608,3 +607,59 @@ fstr() {
   fi
 }
 
+##### === LS = EZA (DEFAULT THEME) === #####
+if command -v eza >/dev/null 2>&1; then
+  # l dựa trên ls (ls đã alias sang eza ở block bên dưới)
+  alias l='ls -lart'
+fi
+
+# khi cd sang thư mục mới thì tự ls (eza) ra
+chpwd() { ls; }
+
+##### === SYSTEMCTL SHORTCUTS === #####
+
+# alias core
+alias sc='sudo systemctl'
+alias scu='systemctl --user'
+
+# status / restart / start / stop / enable+start / disable+stop
+scs()    { sudo systemctl status "$@"; }
+scr()    { sudo systemctl restart "$@"; }
+scstart(){ sudo systemctl start "$@"; }
+scstop() { sudo systemctl stop "$@"; }
+scen()   { sudo systemctl enable --now "$@"; }
+scdis()  { sudo systemctl disable --now "$@"; }
+
+# list service theo pattern (cần rg)
+scl() {
+  if [ -z "$1" ]; then
+    systemctl list-units --type=service
+  else
+    systemctl list-units --type=service | rg -i "$1"
+  fi
+}
+
+# journalctl cho 1 service: cuối log / tail -f
+jce() { sudo journalctl -u "$1" -e --no-pager; }
+jcf() { sudo journalctl -u "$1" -f; }
+
+##### === EZA AS DEFAULT LS === #####
+if command -v eza >/dev/null 2>&1; then
+  # mặc định ls: group dir lên đầu + icon
+  alias ls='eza --group-directories-first --icons'
+
+  # long list, human readable
+  alias ll='eza -lh --group-directories-first --icons'
+
+  # show cả file ẩn
+  alias la='eza -lah --group-directories-first --icons'
+
+  # tree view 2 cấp
+  alias lt='eza -T -L 2 --group-directories-first --icons'
+
+  # tree view show git status
+  alias lg='eza -lh --git --group-directories-first --icons'
+fi
+
+# khi cd sang thư mục mới thì tự ls (eza) ra
+chpwd() { ls; }
