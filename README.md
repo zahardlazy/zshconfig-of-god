@@ -1,116 +1,144 @@
 # 🐉 Zahard's Ultimate ZSH Configuration
 
-A heavy-duty ZSH configuration, specifically optimized for **CTF Players**, **Pwners**, and **Red Teamers**. It comes pre-integrated with binary analysis tools, web pentest utilities, and efficient Linux system management workflows.
+A heavy-duty, highly customized ZSH configuration optimized for **CTF Players**, **Binary Exploitation (Pwn)**, and **Red Teamers**.
 
-## 📦 Prerequisites
-To ensure all commands and aliases function correctly, the following packages are required:
-- **Core:** `zsh`, `oh-my-zsh`, `oh-my-posh`, `fzf`, `zoxide`, `bat`, `eza`, `neofetch`.
-- **Languages:** `python3`, `pip`, `ruby`, `gem`, `node`.
-- **Security Tools:** `metasploit-framework`, `nmap`, `masscan`, `gobuster`, `ffuf`, `wpscan`, `seclists`.
-- **Pwn/RE:** `gdb` (pwndbg/gef), `radare2`, `cutter`, `ropgadget`, `ropper`, `one_gadget`.
+This config integrates powerful aliases for binary analysis, web reconnaissance, and system management, wrapped in a beautiful **Oh My Posh** theme.
 
 ---
 
-## 🚀 Key Bindings
+## 📦 Installation & Dependencies
+
+To ensure all aliases (like `bininfo`, `ff`, `sshup`) work without errors, follow these setup steps.
+
+### 1. Core Shell Environment
+* **Shell:** ZSH (`sudo apt install zsh`)
+* **Framework:** [Oh My Zsh](https://ohmyzsh.github.io/)
+* **Theme:** [Oh My Posh](https://ohmyposh.dev/) (Config: `~/.oh-my-posh/themes/lambdageneration.omp.json`)
+* **Plugins:** `git`, `zsh-autosuggestions`, `zsh-syntax-highlighting`.
+
+### 2. System Utilities (APT)
+Install the core CLI tools required for file listing, searching, and visuals:
+```bash
+sudo apt update && sudo apt install -y \
+    bat eza fdfind ripgrep plocate \
+    curl wget git xclip xsel \
+    python3-venv python3-pip ruby-full nodejs \
+    net-tools sshpass proxychains4 xfreerdp \
+    p7zip-full unrar cabextract \
+    thunar wmctrl neofetch
+```
+
+### 3. Hacking Tools (Kali/APT)
+Standard security tools used in the aliases:
+```bash
+sudo apt install -y \
+    nmap masscan gobuster ffuf wpscan \
+    metasploit-framework exploitdb \
+    gdb checksec nasm radare2
+```
+
+### 4. Python Libraries (PIP)
+Required for Pwn and Web tools. Note: `pipz` alias uses `--break-system-packages`.
+```bash
+pip install --break-system-packages \
+    pwntools impacket pyftpdlib \
+    wsgidav ropper ropgadget one_gadget
+```
+
+### 5. Custom Tools Layout
+The config expects specific tools in specific folders. Clone these if you want the aliases (`enum4linux`, `pwninit`, `jwt_tool`, etc.) to work:
+
+* **`~/apps/`**: `up-http-tool`, `subbrute`, `tplmap`, `XSStrike`, `EyeWitness`, `jwt_tool`, `android-studio`.
+* **`~/tools/`**: `pwninit-py`.
+* **`~/Desktop/scripts/`**: `enum4linux-ng`, `wesng`.
+* **`./Shijima-Qt/`**: Desktop mascot (Arknights).
+
+---
+
+## 🚀 Key Bindings & Navigation
+
 | Shortcut | Function | Description |
 | :--- | :--- | :--- |
-| `Ctrl + F` | **Find File** | Open FZF to select a file and insert its path into the current command. |
-| `Ctrl + G` | **Go to Dir** | Open FZF to select a directory and `cd` into it immediately. |
-| `Ctrl + R` | **History** | Search command history interactively via FZF. |
-| `Ctrl + Q` | **Exit** | Replaces `Ctrl+D` to exit the shell (remapped via `stty`). |
+| **Ctrl + F** | `fzf-file-widget` | Insert file path into command line. |
+| **Ctrl + G** | `fzf-cd-widget` | CD into selected directory immediately. |
+| **Ctrl + R** | `fzf-history-widget` | Interactive History Search. |
+| **Ctrl + Q** | **Exit** | Remapped Exit key (replaces `Ctrl+D`). |
+| `c` | **Clear** | Clear screen + Anime Neofetch. |
+| `..` to `.....`| **Up** | Go up 1-4 directory levels. |
+| `mkcd <dir>` | **Make & Go** | Create directory and `cd` into it. |
 
 ---
 
 ## 🛠️ Command Cheat Sheet
 
-### 1. Core System & Interface
-| Command | Function |
+### 💀 CTF - Pwn & Reverse Engineering (Focus)
+| Command | Description |
 | :--- | :--- |
-| `c` | Clear screen + Show **Neofetch** (Anime Style, `NGU1.png`). |
-| `zcfg` / `scfg` | Edit `.zshrc` with VSCode / Reload configuration. |
-| `s` / `please` | Run with `sudo` / Re-run previous command with `sudo`. |
-| `root` | Switch to root user (`sudo -i`). |
-| `..` ... `.....` | Go up 1 to 4 directory levels. |
-| `mkcd <dir>` | Create a directory and `cd` into it immediately. |
-| `l`, `ll`, `la` | List files using **eza** (with icons, colors, git status). |
-| `cat` | Use **bat** to view files (syntax highlighting). |
-| `extract <file>` | Auto-extract any archive format (`.tar`, `.zip`, `.rar`, `.7z`...). |
-| `ramz` | Check RAM usage and list Top 10 memory-consuming processes. |
+| **`bininfo <bin>`** | **Automated Analysis:** Shows file type, checksec, ldd, and finds offsets for `system`, `/bin/sh`, and `pop rdi` (Binary & Libc). |
+| `gdbpwn <bin>` | Run GDB in quiet mode (`gdb -q`). |
+| `sec` | Run `pwn checksec`. |
+| `tplt` | Generate `exploit.py` template using pwntools. |
+| `pattern_create` | Metasploit pattern create (`-l length`). |
+| `pattern_offset` | Metasploit pattern offset (`-q query`). |
+| `elfxtract` | Run `elfxtract` tool. |
+| `aslr_off` / `on` | Toggle ASLR (Requires sudo). |
+| `gcc_no_prot` | Compile with NO protections (Stack/PIE/NX off). |
+| `xmod` | Auto `chmod +x` all ELF files in current dir. |
+| `ida` / `ghidra` | Launch IDA Pro / Ghidra scripts. |
 
-### 2. CTF - Pwn & Reverse Engineering (Core Focus)
-| Command | Detailed Description |
+### 🌐 CTF - Web & Network
+| Command | Description |
 | :--- | :--- |
-| **`bininfo <bin>`** | **All-in-one Analysis**: Shows File type, Checksec, LDD, and auto-finds offsets for `system`, `/bin/sh`, and `pop rdi` in both Binary and Libc. |
-| `gdbpwn <bin>` | Run GDB in quiet mode. |
-| `sec` | Check binary security features (`pwn checksec`). |
-| `tplt` | Generate a quick pwntools exploit template (`exploit.py`). |
-| `pattern_create` | Metasploit pattern create (`-l <length>`). |
-| `pattern_offset` | Metasploit pattern offset (`-q <query>`). |
-| `elfxtract` | Run ELF extraction tool (custom path). |
-| `aslr_on` / `off` | Toggle System ASLR (`/proc/sys/kernel/randomize_va_space`). |
-| `gcc_no_prot` | Compile with GCC disabling all protections (stack, pie) for practice. |
-| `nasm_shell` | Open Ruby assembly shell code tool. |
-
-### 3. CTF - Web & Network Recon
-| Command | Function |
-| :--- | :--- |
-| `myip` | Show **Local** IP (Cyan) and **Public** IP (Green). |
-| `webup` | Start Python HTTP Server on port 80 (for file transfer). |
-| `ftpup` / `smbup`| Start FTP Server (Port 21) / SMB Server (Impacket). |
-| `plzsh <port>` | Listen for Reverse Shell + Auto TTY Upgrade (Magic!). |
-| `ffuf-dir` | Fuzz directories (Wordlist: directory-list-2.3-medium). |
-| `ffuf-vhost` | Fuzz Subdomains/Vhosts (Wordlist: subdomains-top1million). |
-| `wpscanz` | Quick WordPress Enumeration scan. |
-| `wpbrute` | Brute-force WordPress XMLRPC passwords. |
-| `mscanz <ip>` | Fast port scan using Masscan (Rate 1000). |
-| `qmapz <ip>` | Quick Nmap scan (`-sV -sC`). |
-
-### 4. Connectivity & VPN
-| Command | Function |
-| :--- | :--- |
-| `vpn-htb` | Connect to HackTheBox VPN (Main). |
-| `vpn-academy` | Connect to HTB Academy VPN. |
-| `vpn-thm` | Connect to TryHackMe VPN. |
-| `sshup` | Copy SSH connect command to **Windows Clipboard** (via OSC52). |
+| `myip` | Show Local (Cyan) & Public (Green) IPs. |
+| `webup` | Python HTTP Server (Port 80). |
+| `ftpup` / `smbup` | Start FTP (21) / SMB Server (Impacket). |
+| `plzsh <port>` | **Reverse Shell Listener:** Spawns listener + upgrades TTY automatically. |
+| `sshup` | **Clipboard Magic:** Copy SSH connect string to Windows Clipboard (OSC52). |
 | `ssh2fa_on` | Enable Google Authenticator 2FA for SSH. |
-| `ssh2fa_off` | Disable 2FA, revert to standard password auth. |
-| `qssh` | Quick SSH using `sshpass` (skip manual password entry). |
-| `rdp` | Connect RDP using `xfreerdp` (screen & clipboard config). |
+| `vpn-htb` | Connect to HackTheBox VPN. |
+| `vpn-thm` | Connect to TryHackMe VPN. |
 
-### 5. Dev & Python Utils
-| Command | Function |
+### 🔍 Search & Find (Powered by FZF)
+| Command | Description |
 | :--- | :--- |
-| `qvenv` | Create and activate a Python virtual environment (`venv`) instantly. |
-| `pipz <pkg>` | Install pip package ignoring `break-system-packages` error. |
+| `ff <pattern>` | Find file in current dir (includes **Code Preview**). |
+| `ffa <pattern>` | Find file system-wide (using `locate`). |
+| `fstr <str>` | Find string content **inside** files (Recursive). |
+| `hgrep <str>` | Grep through ZSH history. |
+
+### ⚔️ Scanners & Enumeration
+| Command | Description |
+| :--- | :--- |
+| `ffuf-dir` | Fuzz directories (Medium wordlist). |
+| `ffuf-vhost` | Fuzz vhosts (Top 1M wordlist). |
+| `wpscanz` | Quick WPScan enumeration. |
+| `mscanz <ip>` | Masscan (Rate 1000). |
+| `qmapz <ip>` | Nmap (`-sV -sC`). |
+| `nse <grep>` | Search Nmap scripts. |
+
+### 💻 Dev & System Utils
+| Command | Description |
+| :--- | :--- |
+| `qvenv` | Create & activate Python `venv`. |
+| `pipz` | `pip install` (ignoring system break error). |
 | `pipz_upgrade` | Upgrade all pip packages. |
-| `installz` | Wrapper for `sudo apt-get install -y`. |
-| `docker_run` | Build and run `temp-app` container (for Web/Pwn challenges). |
-
-### 6. Search & Find
-| Command | Function |
-| :--- | :--- |
-| `ff <pat>` | Find file in current directory (with Code Preview). |
-| `ffa <pat>` | Find file system-wide (using `locate`). |
-| `fstr <str>` | Find string content **inside** files. |
-| `hgrep <str>` | Grep through ZSH command history. |
-
-### 7. Fun & Misc
-| Command | Function |
-| :--- | :--- |
-| `shimeji` | Summon Arknights characters to run on your desktop (Shijima-Qt). |
-| `niggamode` | Switch to **TTY3** (Void mode / Black screen for focus). |
-| `godmode` | Switch back to Graphical Interface (GUI). |
-| `thunar` | Open GUI File Manager (`&` background). |
+| `installz` | Alias for `sudo apt install -y`. |
+| `docker_run` | Build & run `temp-app` container. |
+| `ramz` | Show RAM usage & Top 10 processes. |
+| `extract` | Universal archive extractor (`.tar`, `.zip`, `.rar`, etc.). |
 
 ---
 
 ## ⚙️ Configuration Notes
-*Attention: Some aliases point to hardcoded paths specific to the author's machine. Please update `.zshrc` if copying to a new system:*
-* **VPN:** `/home/crystal/Documents/*.ovpn` -> Update to your username/path.
-* **Tools:** `~/apps/...` (android-studio, jwt_tool, tplmap, etc.).
-* **IDA/Cutter:** `/home/zahard/...` -> Point to your installation directory.
+> **⚠️ Hardcoded Paths:**
+> This config contains paths specific to the author's machine. Please update `.zshrc` to match your user:
+> * **VPNs:** `/home/crystal/Documents/*.ovpn`
+> * **Tools:** `/home/zahard/apps/...` or `/home/zahard/ida-pro-9.0/`
 
-## 🎨 Credits
-* **Theme:** Oh My Posh (LambdaGeneration).
-* **Shell:** ZSH + Oh My Zsh.
-* **Author:** Zahard (Mlô).
+## 🎨 Fun Features
+* **`shimeji`**: Spawns Arknights desktop pets (requires Shijima-Qt).
+* **`niggamode`**: Switches to TTY3 (Black screen mode).
+* **`godmode`**: Returns to GUI (TTY2/1).
+
+---
+**Author:** Zahard (Mlô)
