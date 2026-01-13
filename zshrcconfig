@@ -1,3 +1,4 @@
+
 compaudit() { :; }
 
 # Ép chạy compinit ngay sau đó
@@ -108,7 +109,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias c='clear; neofetch --source ~/Pictures/NGU1.png --size 234px'
+alias c="clear;neofetch --disable cpu gpu memory uptime de resolution wm de gtk theme icons host model shell battery locale font song disk packages --image_size 100px  --sixel /home/zahard/Pictures/NGU1.png"
 alias s="sudo"
 alias zcfg="code ~/.zshrc"
 alias scfg="source ~/.zshrc "
@@ -174,7 +175,7 @@ pattern_create(){ /usr/share/metasploit-framework/tools/exploit/pattern_create.r
 pattern_offset(){ /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -q "$1"; }
 
 mount(){
-   if [ $# -eq 0 ]; then command mount | column -t; else sudo mount "$@"; fi
+  if [ $# -eq 0 ]; then command mount | column -t; else sudo mount "$@"; fi
 }
 
 wpscanz(){ wpscan -e ap,t,u --api-token REDACTED --url "$1"; }
@@ -199,7 +200,7 @@ extract(){ if [ -z "$1" ]; then echo "Usage: extract <file>"; elif [ -f "$1" ]; 
 lowercase_extensions(){ for file in *.*; do ext="${file##*.}"; lower_ext=$(echo "$ext" | tr '[:upper:]' '[:lower:]'); if [[ "$ext" != "$lower_ext" ]]; then mv "$file" "${file%.*}.$lower_ext"; fi; done; }
 
 docker_run(){ docker build -t temp-app:latest . && if [ -n "$1" ]; then docker run --rm -it -p "$1":1337 temp-app:latest; else docker run --rm -it temp-app:latest; fi; }
-chpwd() { ls; }
+chpwd() { ls --color=auto; }
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -209,8 +210,8 @@ alias pic="~/Pictures"
 alias vid="~/Videos"
 alias tai="~/Downloads"
 # Remap keyboard interrupt to Ctrl+Q
-stty -ixon        # disable XON/XOFF flow control
-stty intr '^Q'    # cách 1: dùng quote
+stty -ixon       # disable XON/XOFF flow control
+stty intr '^Q'   # cách 1: dùng quote
 alias sec="pwn checksec"
 export PATH=$HOME/.cargo/bin:$PATH
 alias aslr_on="echo 2 | sudo tee /proc/sys/kernel/randomize_va_space"
@@ -224,7 +225,8 @@ hash -d pwnkey=~/.ssh/pwncollege
 
 alias xmod='for f in *; do [[ -f "$f" && -x "$f" ]] || file "$f" | grep -qi "ELF" && chmod +x "$f"; done'
 alias ida='/home/zahard/ida-pro-9.0/ida'
-alias fixlf='find . -type f -name "*.py" -exec sed -i "s/\r$//" {} +'
+alias fixlf='find . -type f -name "*.py" -exec sed -i "s/
+$//" {} +'
 alias pwninit="python3 ~/tools/pwninit-py/pwninit.py"
 alias desk="~/Desktop"
 alias aiproj="/home/zahard/Documents/my-ai-project/my-ai-project"
@@ -233,28 +235,28 @@ neofetch --sixel  /home/zahard/Pictures/NGU1.png
 
 ##### === EXTRA TERMINAL POWER (APPEND ONLY) === #####
 if command -v fzf >/dev/null 2>&1; then
-   if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
-     source /usr/share/doc/fzf/examples/key-bindings.zsh
-   fi
+  if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+  fi
 fi
 
 # 2) Remap phím cho widget của fzf
 if [[ $- == *i* ]]; then
-   # chèn file path bằng fzf
-   if typeset -f fzf-file-widget >/dev/null; then
-     bindkey -r '^T' 2>/dev/null   # bỏ Ctrl-T cũ nếu có
-     bindkey '^F' fzf-file-widget  # Ctrl-F -> chọn file, chèn path
-   fi
+  # chèn file path bằng fzf
+  if typeset -f fzf-file-widget >/dev/null; then
+    bindkey -r '^T' 2>/dev/null   # bỏ Ctrl-T cũ nếu có
+    bindkey '^F' fzf-file-widget  # Ctrl-F -> chọn file, chèn path
+  fi
 
-   # cd vào folder chọn bằng fzf
-   if typeset -f fzf-cd-widget >/dev/null; then
-     bindkey '^G' fzf-cd-widget    # Ctrl-G -> chọn folder, cd vào
-   fi
+  # cd vào folder chọn bằng fzf
+  if typeset -f fzf-cd-widget >/dev/null; then
+    bindkey '^G' fzf-cd-widget    # Ctrl-G -> chọn folder, cd vào
+  fi
 
-   # history search bằng fzf
-   if typeset -f fzf-history-widget >/dev/null; then
-     bindkey '^R' fzf-history-widget
-   fi
+  # history search bằng fzf
+  if typeset -f fzf-history-widget >/dev/null; then
+    bindkey '^R' fzf-history-widget
+  fi
 fi
 # 1) Zsh options / history cho sướng tay
 HISTSIZE=100000
@@ -269,40 +271,33 @@ setopt extended_glob          # glob nâng cao
 
 # 2) fzf keybindings (Ctrl-R, Ctrl-T, Alt-C...)
 if command -v fzf >/dev/null 2>&1; then
-   if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
-     source /usr/share/doc/fzf/examples/key-bindings.zsh
-   elif [ -f ~/.fzf.zsh ]; then
-     source ~/.fzf.zsh
-   fi
+  if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+  elif [ -f ~/.fzf.zsh ]; then
+    source ~/.fzf.zsh
+  fi
 fi
 
 # 3) zoxide - cd thông minh
 if command -v zoxide >/dev/null 2>&1; then
-   eval "$(zoxide init zsh)"
-   # z <pattern> để nhảy nhanh, zi để chọn interactive
-   alias cdi='zi'
+  eval "$(zoxide init zsh)"
+  # z <pattern> để nhảy nhanh, zi để chọn interactive
+  alias cdi='zi'
 fi
 
 # 4) ls / cat / find xịn hơn nếu có cài
 if command -v eza >/dev/null 2>&1; then
-   alias la='eza -lah --group-directories-first --icons'
+  alias la='eza -lah --group-directories-first --icons'
 fi
 
-# --- BAT (Better Cat) CONFIG ---
 if command -v batcat >/dev/null 2>&1; then
-   # Cat thuong (Plain): De copy paste
-   alias cat='batcat --style=plain --paging=never --theme=Dracula'
-   # Preview (Fancy): De doc code
-   alias p='batcat --style=header,grid,numbers --theme=Dracula'
+  alias cat='batcat --paging=never'
 elif command -v bat >/dev/null 2>&1; then
-   # Cat thuong (Plain): De copy paste
-   alias cat='bat --style=plain --paging=never --theme=Dracula'
-   # Preview (Fancy): De doc code
-   alias p='bat --style=header,grid,numbers --theme=Dracula'
+  alias cat='bat --paging=never'
 fi
 
 if command -v fdfind >/dev/null 2>&1; then
-   alias fd='fdfind'
+  alias fd='fdfind'
 fi
 
 # 5) QoL nhỏ nhỏ nhưng hay dùng
@@ -319,343 +314,374 @@ alias ports='ss -tulnp'
 
 # info IP local + public
 myip() {
-   # --- Định nghĩa màu cứng (256-bit Colors) ---
-   # Cú pháp: \e[38;5;NUMm
-   # 46  = Neon Green (Xanh lá chuẩn)
-   # 51  = Neon Cyan  (Xanh lơ chuẩn)
-   # 196 = Red (Đỏ tươi - dùng phòng hờ)
-   
-   local c_pub='\e[38;5;46m'   # Ép màu Xanh Lá (cho Public)
-   local c_loc='\e[38;5;51m'   # Ép màu Cyan (cho Local)
-   local c_bold='\e[1m'        # In đậm
-   local c_reset='\e[0m'       # Reset
+  # --- Định nghĩa màu cứng (256-bit Colors) ---
+  # Cú pháp: [38;5;NUMm
+  # 46  = Neon Green (Xanh lá chuẩn)
+  # 51  = Neon Cyan  (Xanh lơ chuẩn)
+  # 196 = Red (Đỏ tươi - dùng phòng hờ)
+  
+  local c_pub='[38;5;46m'   # Ép màu Xanh Lá (cho Public)
+  local c_loc='[38;5;51m'   # Ép màu Cyan (cho Local)
+  local c_bold='[1m'        # In đậm
+  local c_reset='[0m'       # Reset
 
-   # --- 1. Xử lý Local IP ---
-   local loc_ip
-   if command -v ip >/dev/null 2>&1; then
-     loc_ip=$(ip -4 addr show dev eth0 2>/dev/null | awk '/inet /{print $2}' | cut -d/ -f1)
-   elif command -v ifconfig >/dev/null 2>&1; then
-     loc_ip=$(ifconfig eth0 2>/dev/null | awk '/inet /{print $2}' | head -n1)
-   else
-     loc_ip="Not found"
-   fi
+  # --- 1. Xử lý Local IP ---
+  local loc_ip
+  if command -v ip >/dev/null 2>&1; then
+    loc_ip=$(ip -4 addr show dev eth0 2>/dev/null | awk '/inet /{print $2}' | cut -d/ -f1)
+  elif command -v ifconfig >/dev/null 2>&1; then
+    loc_ip=$(ifconfig eth0 2>/dev/null | awk '/inet /{print $2}' | head -n1)
+  else
+    loc_ip="Not found"
+  fi
 
-   # --- 2. Xử lý Public IP ---
-   local pub_ip
-   pub_ip=$(
-     curl -s --connect-timeout 2 https://ipinfo.io/ip 2>/dev/null \
-     || curl -s --connect-timeout 2 https://ifconfig.me 2>/dev/null \
-     || echo "(offline?)"
-   )
+  # --- 2. Xử lý Public IP ---
+  local pub_ip
+  pub_ip=$(
+    curl -s --connect-timeout 2 https://ipinfo.io/ip 2>/dev/null \
+    || curl -s --connect-timeout 2 https://ifconfig.me 2>/dev/null \
+    || echo "(offline?)"
+  )
 
-   # --- 3. In ra màn hình ---
-   # Local màu Cyan (51), Public màu Green (46)
-   printf "${c_bold}%-7s${c_reset} : ${c_loc}%s${c_reset}\n"  "Local"  "$loc_ip"
-   printf "${c_bold}%-7s${c_reset} : ${c_pub}%s${c_reset}\n"  "Public" "$pub_ip"
+  # --- 3. In ra màn hình ---
+  # Local màu Cyan (51), Public màu Green (46)
+  printf "${c_bold}%-7s${c_reset} : ${c_loc}%s${c_reset}
+"  "Local"  "$loc_ip"
+  printf "${c_bold}%-7s${c_reset} : ${c_pub}%s${c_reset}
+"  "Public" "$pub_ip"
 }
 
 # 6) CTF helpers
 
 # tạo nhanh skeleton project CTF
 cproj(){
-   if [ -z "$1" ]; then
-     echo "Usage: cproj <ten_project>"
-     return 1
-   fi
-   base="$HOME/ctf/$1"
-   mkdir -p "$base"/{bin,src,scripts,notes,loot}
-   cd "$base"
-   [ ! -f notes/README.md ] && echo "# $1" > notes/README.md
+  if [ -z "$1" ]; then
+    echo "Usage: cproj <ten_project>"
+    return 1
+  fi
+  base="$HOME/ctf/$1"
+  mkdir -p "$base"/{bin,src,scripts,notes,loot}
+  cd "$base"
+  [ ! -f notes/README.md ] && echo "# $1" > notes/README.md
 }
 
 # wrapper gdb cho pwn (chỉnh thêm nếu m dùng pwndbg/gef riêng)
 gdbpwn(){
-   if [ $# -eq 0 ]; then
-     echo "Usage: gdbpwn <binary> [args...]"
-     return 1
-   fi
-   gdb -q "$@"
+  if [ $# -eq 0 ]; then
+    echo "Usage: gdbpwn <binary> [args...]"
+    return 1
+  fi
+  gdb -q "$@"
 }
 if command -v fzf >/dev/null 2>&1; then
-   if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
-     source /usr/share/doc/fzf/examples/key-bindings.zsh
-   elif [ -f ~/.fzf.zsh ]; then
-     source ~/.fzf.zsh
-   fi
+  if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+  elif [ -f ~/.fzf.zsh ]; then
+    source ~/.fzf.zsh
+  fi
 fi
 
 ##### === BINARY QUICK INFO (OFFSETS & LIBC) – SHORT HEX & POP RDI === #####
 bininfo() {
-   if [ -z "$1" ]; then
-     echo "Usage: bininfo <binary>"
-     return 1
-   fi
+  if [ -z "$1" ]; then
+    echo "Usage: bininfo <binary>"
+    return 1
+  fi
 
-   local b="$1"
+  local b="$1"
 
-   if [ ! -f "$b" ]; then
-     echo "bininfo: '$b' not found"
-     return 1
-   fi
+  if [ ! -f "$b" ]; then
+    echo "bininfo: '$b' not found"
+    return 1
+  fi
 
-   # màu
-   local C_RESET=$'\e[0m'
-   local C_HDR=$'\e[1;36m'    # bold cyan
-   local C_NAME=$'\e[1;35m'   # bold magenta
-   local C_OK=$'\e[1;32m'     # bold green  (libc offsets, libc path)
-   local C_WARN=$'\e[1;33m'   # bold yellow
-   local C_VAL=$'\e[1;34m'    # bold blue   (binary offsets)
+  # màu
+  local C_RESET=$'[0m'
+  local C_HDR=$'[1;36m'    # bold cyan
+  local C_NAME=$'[1;35m'   # bold magenta
+  local C_OK=$'[1;32m'     # bold green  (libc offsets, libc path)
+  local C_WARN=$'[1;33m'   # bold yellow
+  local C_VAL=$'[1;34m'    # bold blue   (binary offsets)
 
-   # helper: nhận "0000000000058750" hoặc "0x0000000000058750" -> trả "58750"
-   _hex_short() {
-     local v="$1"
-     [[ $v == 0x* || $v == 0X* ]] || v="0x$v"
-     # printf %x tự bỏ leading zero
-     printf '%x' "$v"
-   }
+  # helper: nhận "0000000000058750" hoặc "0x0000000000058750" -> trả "58750"
+  _hex_short() {
+    local v="$1"
+    [[ $v == 0x* || $v == 0X* ]] || v="0x$v"
+    # printf %x tự bỏ leading zero
+    printf '%x' "$v"
+  }
 
-   printf '%s== file ==%s\n' "$C_HDR" "$C_RESET"
-   file "$b"
+  printf '%s== file ==%s
+' "$C_HDR" "$C_RESET"
+  file "$b"
 
-   echo
-   printf '%s== checksec ==%s\n' "$C_HDR" "$C_RESET"
-   if command -v pwn >/dev/null 2>&1; then
-     pwn checksec "$b"
-   elif command -v checksec >/dev/null 2>&1; then
-     checksec --file="$b"
-   else
-     printf '  %schecksec / pwn checksec not found.%s\n' "$C_WARN" "$C_RESET"
-   fi
+  echo
+  printf '%s== checksec ==%s
+' "$C_HDR" "$C_RESET"
+  if command -v pwn >/dev/null 2>&1; then
+    pwn checksec "$b"
+  elif command -v checksec >/dev/null 2>&1; then
+    checksec --file="$b"
+  else
+    printf '  %schecksec / pwn checksec not found.%s
+' "$C_WARN" "$C_RESET"
+  fi
 
-   echo
-   printf '%s== ldd ==%s\n' "$C_HDR" "$C_RESET"
-   if command -v ldd >/dev/null 2>&1; then
-     ldd "$b" 2>/dev/null || printf '  %sstatic or ldd failed%s\n' "$C_WARN" "$C_RESET"
-   else
-     printf '  %sldd not found.%s\n' "$C_WARN" "$C_RESET"
-   fi
+  echo
+  printf '%s== ldd ==%s
+' "$C_HDR" "$C_RESET"
+  if command -v ldd >/dev/null 2>&1; then
+    ldd "$b" 2>/dev/null || printf '  %sstatic or ldd failed%s
+' "$C_WARN" "$C_RESET"
+  else
+    printf '  %sldd not found.%s
+' "$C_WARN" "$C_RESET"
+  fi
 
-   echo
-   printf '%s== binary symbol offsets (system, "/bin/sh", pop rdi; ret) ==%s\n' "$C_HDR" "$C_RESET"
+  echo
+  printf '%s== binary symbol offsets (system, "/bin/sh", pop rdi; ret) ==%s
+' "$C_HDR" "$C_RESET"
 
-   # system@binary
-   if command -v nm >/dev/null 2>&1; then
-     local sys_bin
-     sys_bin=$(nm -D --defined-only "$b" 2>/dev/null | awk '$3=="system"{print $1; exit}')
-     if [ -n "$sys_bin" ]; then
-       printf '  %ssystem@binary:%s %s0x%s%s\n' \
-         "$C_NAME" "$C_RESET" "$C_VAL" "$(_hex_short "$sys_bin")" "$C_RESET"
-     else
-       printf '  %ssystem@binary:%s %s<not found>%s\n' \
-         "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
-     fi
-   else
-     printf '  %snm not found, skip system@binary.%s\n' "$C_WARN" "$C_RESET"
-   fi
+  # system@binary
+  if command -v nm >/dev/null 2>&1; then
+    local sys_bin
+    sys_bin=$(nm -D --defined-only "$b" 2>/dev/null | awk '$3=="system"{print $1; exit}')
+    if [ -n "$sys_bin" ]; then
+      printf '  %ssystem@binary:%s %s0x%s%s
+' \
+        "$C_NAME" "$C_RESET" "$C_VAL" "$(_hex_short "$sys_bin")" "$C_RESET"
+    else
+      printf '  %ssystem@binary:%s %s<not found>%s
+' \
+        "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
+    fi
+  else
+    printf '  %snm not found, skip system@binary.%s
+' "$C_WARN" "$C_RESET"
+  fi
 
-   # "/bin/sh"@binary
-   if command -v strings >/dev/null 2>&1; then
-     local shoff_bin
-     shoff_bin=$(strings -a -t x "$b" 2>/dev/null | grep "/bin/sh" | head -n1 | awk '{print $1}')
-     if [ -n "$shoff_bin" ]; then
-       printf '  %s"/bin/sh"@binary:%s %s0x%s%s\n' \
-         "$C_NAME" "$C_RESET" "$C_VAL" "$(_hex_short "$shoff_bin")" "$C_RESET"
-     else
-       printf '  %s"/bin/sh"@binary:%s %s<not found>%s\n' \
-         "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
-     fi
-   else
-     printf '  %sstrings not found, skip "/bin/sh" in binary.%s\n' "$C_WARN" "$C_RESET"
-   fi
+  # "/bin/sh"@binary
+  if command -v strings >/dev/null 2>&1; then
+    local shoff_bin
+    shoff_bin=$(strings -a -t x "$b" 2>/dev/null | grep "/bin/sh" | head -n1 | awk '{print $1}')
+    if [ -n "$shoff_bin" ]; then
+      printf '  %s"/bin/sh"@binary:%s %s0x%s%s
+' \
+        "$C_NAME" "$C_RESET" "$C_VAL" "$(_hex_short "$shoff_bin")" "$C_RESET"
+    else
+      printf '  %s"/bin/sh"@binary:%s %s<not found>%s
+' \
+        "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
+    fi
+  else
+    printf '  %sstrings not found, skip "/bin/sh" in binary.%s
+' "$C_WARN" "$C_RESET"
+  fi
 
-   # pop rdi; ret@binary
-   local poprdi_bin=""
-   if command -v ROPgadget >/dev/null 2>&1; then
-     poprdi_bin=$(ROPgadget --binary "$b" --only "pop|ret" 2>/dev/null \
-       | grep -m1 "pop rdi ; ret" \
-       | awk -F' :' '{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $1); print $1}')
-   elif command -v ropper >/dev/null 2>&1; then
-     poprdi_bin=$(ropper --file "$b" --search "pop rdi; ret" 2>/dev/null \
-       | awk '/pop rdi; ret/ {print $1; exit}')
-   fi
+  # pop rdi; ret@binary
+  local poprdi_bin=""
+  if command -v ROPgadget >/dev/null 2>&1; then
+    poprdi_bin=$(ROPgadget --binary "$b" --only "pop|ret" 2>/dev/null \
+      | grep -m1 "pop rdi ; ret" \
+      | awk -F' :' '{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $1); print $1}')
+  elif command -v ropper >/dev/null 2>&1; then
+    poprdi_bin=$(ropper --file "$b" --search "pop rdi; ret" 2>/dev/null \
+      | awk '/pop rdi; ret/ {print $1; exit}')
+  fi
 
-   if [ -n "$poprdi_bin" ]; then
-     printf '  %spop rdi; ret@binary:%s %s0x%s%s\n' \
-       "$C_NAME" "$C_RESET" "$C_VAL" "$(_hex_short "$poprdi_bin")" "$C_RESET"
-   else
-     printf '  %spop rdi; ret@binary:%s %s<not found or ROPgadget/ropper missing>%s\n' \
-       "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
-   fi
+  if [ -n "$poprdi_bin" ]; then
+    printf '  %spop rdi; ret@binary:%s %s0x%s%s
+' \
+      "$C_NAME" "$C_RESET" "$C_VAL" "$(_hex_short "$poprdi_bin")" "$C_RESET"
+  else
+    printf '  %spop rdi; ret@binary:%s %s<not found or ROPgadget/ropper missing>%s
+' \
+      "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
+  fi
 
-   echo
-   printf '%s== libc analysis (if dynamically linked) ==%s\n' "$C_HDR" "$C_RESET"
+  echo
+  printf '%s== libc analysis (if dynamically linked) ==%s
+' "$C_HDR" "$C_RESET"
 
-   if ! command -v ldd >/dev/null 2>&1; then
-     printf '  %sldd not found, skip libc.%s\n' "$C_WARN" "$C_RESET"
-     return 0
-   fi
+  if ! command -v ldd >/dev/null 2>&1; then
+    printf '  %sldd not found, skip libc.%s
+' "$C_WARN" "$C_RESET"
+    return 0
+  fi
 
-   local libc
-   libc=$(ldd "$b" 2>/dev/null | awk '/libc\.so/ {print $3; exit}')
+  local libc
+  libc=$(ldd "$b" 2>/dev/null | awk '/libc\.so/ {print $3; exit}')
 
-   if [ -z "$libc" ] || [ ! -r "$libc" ]; then
-     printf '  %slibc not found via ldd (maybe static / musl / custom).%s\n' "$C_WARN" "$C_RESET"
-     return 0
-   fi
+  if [ -z "$libc" ] || [ ! -r "$libc" ]; then
+    printf '  %slibc not found via ldd (maybe static / musl / custom).%s
+' "$C_WARN" "$C_RESET"
+    return 0
+  fi
 
-   printf '  %slibc path:%s %s%s%s\n' "$C_NAME" "$C_RESET" "$C_OK" "$libc" "$C_RESET"
+  printf '  %slibc path:%s %s%s%s
+' "$C_NAME" "$C_RESET" "$C_OK" "$libc" "$C_RESET"
 
-   echo
-   printf '  %s-> libc system / "/bin/sh" / pop rdi; ret offsets:%s\n' "$C_HDR" "$C_RESET"
+  echo
+  printf '  %s-> libc system / "/bin/sh" / pop rdi; ret offsets:%s
+' "$C_HDR" "$C_RESET"
 
-   # system@libc
-   local sys_libc=""
-   if command -v nm >/dev/null 2>&1; then
-     sys_libc=$(nm -D --defined-only "$libc" 2>/dev/null \
-       | awk '$3 ~ /^system(@@|@@GLIBC_.*)?$/ {print $1; exit}')
-   elif command -v readelf >/dev/null 2>&1; then
-     sys_libc=$(readelf -sW "$libc" 2>/dev/null \
-       | awk '$8 ~ /^system(@@|@@GLIBC_.*)?$/ {print $2; exit}')
-   fi
+  # system@libc
+  local sys_libc=""
+  if command -v nm >/dev/null 2>&1; then
+    sys_libc=$(nm -D --defined-only "$libc" 2>/dev/null \
+      | awk '$3 ~ /^system(@@|@@GLIBC_.*)?$/ {print $1; exit}')
+  elif command -v readelf >/dev/null 2>&1; then
+    sys_libc=$(readelf -sW "$libc" 2>/dev/null \
+      | awk '$8 ~ /^system(@@|@@GLIBC_.*)?$/ {print $2; exit}')
+  fi
 
-   if [ -n "$sys_libc" ]; then
-     printf '     %ssystem@libc:%s %s0x%s%s\n' \
-       "$C_NAME" "$C_RESET" "$C_OK" "$(_hex_short "$sys_libc")" "$C_RESET"
-   else
-     printf '     %ssystem@libc:%s %s<not found>%s\n' \
-       "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
-   fi
+  if [ -n "$sys_libc" ]; then
+    printf '     %ssystem@libc:%s %s0x%s%s
+' \
+      "$C_NAME" "$C_RESET" "$C_OK" "$(_hex_short "$sys_libc")" "$C_RESET"
+  else
+    printf '     %ssystem@libc:%s %s<not found>%s
+' \
+      "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
+  fi
 
-   # "/bin/sh"@libc
-   if command -v strings >/dev/null 2>&1; then
-     local shoff_libc
-     shoff_libc=$(strings -a -t x "$libc" 2>/dev/null | grep "/bin/sh" | head -n1 | awk '{print $1}')
-     if [ -n "$shoff_libc" ]; then
-       printf '     %s"/bin/sh"@libc:%s %s0x%s%s\n' \
-         "$C_NAME" "$C_RESET" "$C_OK" "$(_hex_short "$shoff_libc")" "$C_RESET"
-     else
-       printf '     %s"/bin/sh"@libc:%s %s<not found>%s\n' \
-         "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
-     fi
-   else
-     printf '     %sstrings not found, skip "/bin/sh" in libc.%s\n' "$C_WARN" "$C_RESET"
-   fi
+  # "/bin/sh"@libc
+  if command -v strings >/dev/null 2>&1; then
+    local shoff_libc
+    shoff_libc=$(strings -a -t x "$libc" 2>/dev/null | grep "/bin/sh" | head -n1 | awk '{print $1}')
+    if [ -n "$shoff_libc" ]; then
+      printf '     %s"/bin/sh"@libc:%s %s0x%s%s
+' \
+        "$C_NAME" "$C_RESET" "$C_OK" "$(_hex_short "$shoff_libc")" "$C_RESET"
+    else
+      printf '     %s"/bin/sh"@libc:%s %s<not found>%s
+' \
+        "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
+    fi
+  else
+    printf '     %sstrings not found, skip "/bin/sh" in libc.%s
+' "$C_WARN" "$C_RESET"
+  fi
 
-   # pop rdi; ret@libc
-   local poprdi_libc=""
-   if command -v ROPgadget >/dev/null 2>&1; then
-     poprdi_libc=$(ROPgadget --binary "$libc" --only "pop|ret" 2>/dev/null \
-       | grep -m1 "pop rdi ; ret" \
-       | awk -F' :' '{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $1); print $1}')
-   elif command -v ropper >/dev/null 2>&1; then
-     poprdi_libc=$(ropper --file "$libc" --search "pop rdi; ret" 2>/dev/null \
-       | awk '/pop rdi; ret/ {print $1; exit}')
-   fi
+  # pop rdi; ret@libc
+  local poprdi_libc=""
+  if command -v ROPgadget >/dev/null 2>&1; then
+    poprdi_libc=$(ROPgadget --binary "$libc" --only "pop|ret" 2>/dev/null \
+      | grep -m1 "pop rdi ; ret" \
+      | awk -F' :' '{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $1); print $1}')
+  elif command -v ropper >/dev/null 2>&1; then
+    poprdi_libc=$(ropper --file "$libc" --search "pop rdi; ret" 2>/dev/null \
+      | awk '/pop rdi; ret/ {print $1; exit}')
+  fi
 
-   if [ -n "$poprdi_libc" ]; then
-     printf '     %spop rdi; ret@libc:%s %s0x%s%s\n' \
-       "$C_NAME" "$C_RESET" "$C_OK" "$(_hex_short "$poprdi_libc")" "$C_RESET"
-   else
-     printf '     %spop rdi; ret@libc:%s %s<not found or ROPgadget/ropper missing>%s\n' \
-       "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
-   fi
+  if [ -n "$poprdi_libc" ]; then
+    printf '     %spop rdi; ret@libc:%s %s0x%s%s
+' \
+      "$C_NAME" "$C_RESET" "$C_OK" "$(_hex_short "$poprdi_libc")" "$C_RESET"
+  else
+    printf '     %spop rdi; ret@libc:%s %s<not found or ROPgadget/ropper missing>%s
+' \
+      "$C_NAME" "$C_RESET" "$C_WARN" "$C_RESET"
+  fi
 }
 
 ##### === FAST FILE / STRING FINDERS === #####
 
 # ff  -> tìm file trong thư mục hiện tại (hoặc dir chỉ định), dùng fd/find + fzf
-# ff <pattern>           : tìm trong $PWD
-# ff <dir> <pattern>     : tìm trong dir
+# ff <pattern>          : tìm trong $PWD
+# ff <dir> <pattern>    : tìm trong dir
 ff() {
-   local dir pattern
-   if [ $# -eq 1 ]; then
-     dir="."
-     pattern="$1"
-   elif [ $# -ge 2 ]; then
-     dir="$1"
-     shift
-     pattern="$*"
-   else
-     echo "Usage:"
-     echo "  ff <pattern>"
-     echo "  ff <dir> <pattern>"
-     return 1
-   fi
+  local dir pattern
+  if [ $# -eq 1 ]; then
+    dir="."
+    pattern="$1"
+  elif [ $# -ge 2 ]; then
+    dir="$1"
+    shift
+    pattern="$*"
+  else
+    echo "Usage:"
+    echo "  ff <pattern>"
+    echo "  ff <dir> <pattern>"
+    return 1
+  fi
 
-   [ ! -d "$dir" ] && echo "ff: '$dir' không phải thư mục." && return 1
+  [ ! -d "$dir" ] && echo "ff: '$dir' không phải thư mục." && return 1
 
-   if command -v fdfind >/dev/null 2>&1; then
-     fdfind --hidden --follow --type f "$pattern" "$dir" 2>/dev/null | fzf
-   elif command -v fd >/dev/null 2>&1; then
-     fd --hidden --follow --type f "$pattern" "$dir" 2>/dev/null | fzf
-   else
-     find "$dir" -type f -iname "*${pattern}*" 2>/dev/null | fzf
-   fi
+  if command -v fdfind >/dev/null 2>&1; then
+    fdfind --hidden --follow --type f "$pattern" "$dir" 2>/dev/null | fzf
+  elif command -v fd >/dev/null 2>&1; then
+    fd --hidden --follow --type f "$pattern" "$dir" 2>/dev/null | fzf
+  else
+    find "$dir" -type f -iname "*${pattern}*" 2>/dev/null | fzf
+  fi
 }
 
 # ffa -> "ff any" = tìm file *toàn hệ thống* bằng locate (siêu nhanh) + fzf
 # ffa <pattern>
 ffa() {
-   if [ -z "$1" ]; then
-     echo "Usage: ffa <pattern>"
-     return 1
-   fi
-   if ! command -v locate >/dev/null 2>&1; then
-     echo "ffa: 'locate' chưa cài (plocate/mlocate)."
-     return 1
-   fi
-   locate -i "$1" 2>/dev/null | fzf
+  if [ -z "$1" ]; then
+    echo "Usage: ffa <pattern>"
+    return 1
+  fi
+  if ! command -v locate >/dev/null 2>&1; then
+    echo "ffa: 'locate' chưa cài (plocate/mlocate)."
+    return 1
+  fi
+  locate -i "$1" 2>/dev/null | fzf
 }
 
 # fstr -> tìm string trong file, mặc định chỉ trong thư mục hiện tại
-# fstr <string>           : tìm trong $PWD
-# fstr <dir> <string>     : tìm trong dir
+# fstr <string>          : tìm trong $PWD
+# fstr <dir> <string>    : tìm trong dir
 fstr() {
-   local dir pattern
-   if [ $# -eq 1 ]; then
-     dir="."
-     pattern="$1"
-   elif [ $# -ge 2 ]; then
-     dir="$1"
-     shift
-     pattern="$*"
-   else
-     echo "Usage:"
-     echo "  fstr <string>"
-     echo "  fstr <dir> <string>"
-     return 1
-   fi
+  local dir pattern
+  if [ $# -eq 1 ]; then
+    dir="."
+    pattern="$1"
+  elif [ $# -ge 2 ]; then
+    dir="$1"
+    shift
+    pattern="$*"
+  else
+    echo "Usage:"
+    echo "  fstr <string>"
+    echo "  fstr <dir> <string>"
+    return 1
+  fi
 
-   [ ! -d "$dir" ] && echo "fstr: '$dir' không phải thư mục." && return 1
+  [ ! -d "$dir" ] && echo "fstr: '$dir' không phải thư mục." && return 1
 
-   if command -v rg >/dev/null 2>&1; then
-     # rg rất nhanh, nhưng giới hạn trong dir cho đỡ nát
-     local out
-     out=$(rg --line-number --no-heading --color=never "$pattern" "$dir" 2>/dev/null | fzf +m) || return 1
-     local file line
-     file=${out%%:*}
-     line=${out#*:}
-     line=${line%%:*}
-     printf '%s:%s\n' "$file" "$line"
-   else
-     local out
-     out=$(grep -Rni "$pattern" "$dir" 2>/dev/null | fzf +m) || return 1
-     local file line
-     file=${out%%:*}
-     line=${out#*:}
-     line=${line%%:*}
-     printf '%s:%s\n' "$file" "$line"
-   fi
+  if command -v rg >/dev/null 2>&1; then
+    # rg rất nhanh, nhưng giới hạn trong dir cho đỡ nát
+    local out
+    out=$(rg --line-number --no-heading --color=never "$pattern" "$dir" 2>/dev/null | fzf +m) || return 1
+    local file line
+    file=${out%%:*}
+    line=${out#*:}
+    line=${line%%:*}
+    printf '%s:%s
+' "$file" "$line"
+  else
+    local out
+    out=$(grep -Rni "$pattern" "$dir" 2>/dev/null | fzf +m) || return 1
+    local file line
+    file=${out%%:*}
+    line=${out#*:}
+    line=${line%%:*}
+    printf '%s:%s
+' "$file" "$line"
+  fi
 }
 
 
 ##### === LS = EZA (DEFAULT THEME) === #####
 if command -v eza >/dev/null 2>&1; then
-   # ls giờ là eza
+  # ls giờ là eza
 
-   # l, ll, la đều dựa trên ls (tức là eza)
-   alias l='ls -lart'
-   alias la='ls -lah'
+  # l, ll, la đều dựa trên ls (tức là eza)
+  alias l='ls -lart'
+  alias la='ls -lah'
 fi
 
 # khi cd sang thư mục mới thì tự ls (eza) ra
@@ -677,11 +703,11 @@ scdis()  { sudo systemctl disable --now "$@"; }
 
 # list service theo pattern (cần rg, m có rồi)
 scl() {
-   if [ -z "$1" ]; then
-     systemctl list-units --type=service
-   else
-     systemctl list-units --type=service | rg -i "$1"
-   fi
+  if [ -z "$1" ]; then
+    systemctl list-units --type=service
+  else
+    systemctl list-units --type=service | rg -i "$1"
+  fi
 }
 
 # journalctl cho 1 service: cuối log / tail -f
@@ -690,118 +716,145 @@ jcf() { sudo journalctl -u "$1" -f; }
 
 ##### === EZA AS DEFAULT LS (IGNORE LS_COLORS) === #####
 if command -v eza >/dev/null 2>&1; then
-   # Xóa alias cũ cho chắc ăn
-   unalias ls ll la lt lg 2>/dev/null
+  # Xóa alias cũ cho chắc ăn
+  unalias ls ll la lt lg 2>/dev/null
 
-   # Dùng từ khóa 'function' để tránh bị lỗi "defining function based on alias"
-   function ls {
-     (unset LS_COLORS EZA_COLORS; eza --group-directories-first --icons "$@")
-   }
+  # Dùng từ khóa 'function' để tránh bị lỗi "defining function based on alias"
+  function ls {
+    (unset LS_COLORS EZA_COLORS; eza --group-directories-first --icons "$@")
+  }
 
-   function ll {
-     (unset LS_COLORS EZA_COLORS; eza -lh --group-directories-first --icons "$@")
-   }
+  function ll {
+    (unset LS_COLORS EZA_COLORS; eza -lh --group-directories-first --icons "$@")
+  }
 
-   function la {
-     (unset LS_COLORS EZA_COLORS; eza -lah --group-directories-first --icons "$@")
-   }
+  function la {
+    (unset LS_COLORS EZA_COLORS; eza -lah --group-directories-first --icons "$@")
+  }
 
-   function lt {
-     (unset LS_COLORS EZA_COLORS; eza -T -L 2 --group-directories-first --icons "$@")
-   }
+  function lt {
+    (unset LS_COLORS EZA_COLORS; eza -T -L 2 --group-directories-first --icons "$@")
+  }
 
-   function lg {
-     (unset LS_COLORS EZA_COLORS; eza -lh --git --group-directories-first --icons "$@")
-   }
+  function lg {
+    (unset LS_COLORS EZA_COLORS; eza -lh --git --group-directories-first --icons "$@")
+  }
 fi
 
 alias thunar='thunar &' 
 # --- Auto Shimeji 978 (Chỉ chạy 1 lần duy nhất) ---
 shimeji() {
-     # Chạy Shijima-Qt chính
-     ./Shijima-Qt/shijima-qt & sleep 0.5
-     
-     # Spawn các nhân vật
-     ./Shijima-Qt/shijima-qt spawn --name 978 & sleep 0.1
-     ./Shijima-Qt/shijima-qt spawn --name 494 & sleep 0.1
-     ./Shijima-Qt/shijima-qt spawn --name "Blue Poison" & sleep 0.1
-     ./Shijima-Qt/shijima-qt spawn --name Lappland & sleep 0.1
-     ./Shijima-Qt/shijima-qt spawn --name Shining 
-     
-     # Clear màn hình và focus lại vào terminal
-     c  # Lệnh clear từ config của bạn
-     wmctrl -a "Konsole"
+    # Chạy Shijima-Qt chính
+    ./Shijima-Qt/shijima-qt & sleep 0.5
+    
+    # Spawn các nhân vật
+    ./Shijima-Qt/shijima-qt spawn --name 978 & sleep 0.1
+    ./Shijima-Qt/shijima-qt spawn --name 494 & sleep 0.1
+    ./Shijima-Qt/shijima-qt spawn --name "Blue Poison" & sleep 0.1
+    ./Shijima-Qt/shijima-qt spawn --name Lappland & sleep 0.1
+    ./Shijima-Qt/shijima-qt spawn --name Shining 
+    
+    # Clear màn hình và focus lại vào terminal
+    c  # Lệnh clear từ config của bạn
+    wmctrl -a "Konsole"
 }
 
 # Hàm Search File với Preview Code (Yêu cầu: fzf, bat)
 ff() {
-   fzf --preview 'bat --style=numbers --color=always --line-range :500 {}' \
-       --preview-window=right:60%
+  fzf --preview 'bat --style=numbers --color=always --line-range :500 {}' \
+      --preview-window=right:60%
 }
 # Check RAM & Top Processes (Clean Version)
 ramz() {
-   echo -e "\n\e[1;32m=== RAM USAGE ===\e[0m"
-   free -h
-   echo -e "\n\e[1;31m=== TOP 10 RAM EATERS ===\e[0m"
-   # -eo: Tùy chỉnh cột hiển thị
-   # comm: Chỉ hiện tên app (vd: code, gnome-shell) thay vì full đường dẫn
-   ps -eo pid,%mem,%cpu,comm --sort=-%mem | head -n 11
+  echo -e "
+[1;32m=== RAM USAGE ===[0m"
+  free -h
+  echo -e "
+[1;31m=== TOP 10 RAM EATERS ===[0m"
+  # -eo: Tùy chỉnh cột hiển thị
+  # comm: Chỉ hiện tên app (vd: code, gnome-shell) thay vì full đường dẫn
+  ps -eo pid,%mem,%cpu,comm --sort=-%mem | head -n 11
 }
 
 sshup() {
-     # 1. Lấy IP của máy Kali (Lấy IP đầu tiên tìm thấy)
-     local ip=$(hostname -I | awk '{print $1}')
-     
-     # 2. Tạo chuỗi lệnh SSH
-     local ssh_cmd="ssh zahard@$ip"
-     
-     # 3. In ra màn hình để nhìn cho sướng
-     echo -e "\n\e[1;36m----------------------------------------\e[0m"
-     echo -e "\e[1;32m[+] SSH Connect Command:\e[0m"
-     echo -e "    $ssh_cmd"
-     echo -e "\e[1;36m----------------------------------------\e[0m"
-     
-     # 4. MAGIC: Gửi lệnh copy OSC 52 về Tabby (Windows)
-     # Nguyên lý: Mã hóa base64 chuỗi lệnh -> Gửi qua luồng hiển thị -> Tabby bắt được và nhét vào Clipboard
-     printf "\033]52;c;$(echo -n "$ssh_cmd" | base64 | tr -d '\n')\a"
-     
-     echo -e "\e[1;33m[✔] Auto-copied to Windows Clipboard! Paste it anywhere.\e[0m\n"
+    # 1. Lấy IP của máy Kali (Lấy IP đầu tiên tìm thấy)
+    local ip=$(hostname -I | awk '{print $1}')
+    
+    # 2. Tạo chuỗi lệnh SSH
+    local ssh_cmd="ssh zahard@$ip"
+    
+    # 3. In ra màn hình để nhìn cho sướng
+    echo -e "
+[1;36m----------------------------------------[0m"
+    echo -e "[1;32m[+] SSH Connect Command:[0m"
+    echo -e "    $ssh_cmd"
+    echo -e "[1;36m----------------------------------------[0m"
+    
+    # 4. MAGIC: Gửi lệnh copy OSC 52 về Tabby (Windows)
+    # Nguyên lý: Mã hóa base64 chuỗi lệnh -> Gửi qua luồng hiển thị -> Tabby bắt được và nhét vào Clipboard
+    printf "]52;c;$(echo -n "$ssh_cmd" | base64 | tr -d '
+')"
+    
+    echo -e "[1;33m[✔] Auto-copied to Windows Clipboard! Paste it anywhere.[0m
+"
 }
 
+sshup() {
+    # 1. Lấy IP của máy Kali (Lấy IP đầu tiên tìm thấy)
+    local ip=$(hostname -I | awk '{print $1}')
+    
+    # 2. Tạo chuỗi lệnh SSH
+    local ssh_cmd="zahard@$ip"
+    
+    # 3. In ra màn hình để nhìn cho sướng
+    echo -e "
+[1;36m----------------------------------------[0m"
+    echo -e "[1;32m[+] SSH Connect Command:[0m"
+    echo -e "    $ssh_cmd"
+    echo -e "[1;36m----------------------------------------[0m"
+    
+    # 4. MAGIC: Gửi lệnh copy OSC 52 về Tabby (Windows)
+    # Nguyên lý: Mã hóa base64 chuỗi lệnh -> Gửi qua luồng hiển thị -> Tabby bắt được và nhét vào Clipboard
+    printf "]52;c;$(echo -n "$ssh_cmd" | base64 | tr -d '
+')"
+    
+    echo -e "[1;33m[✔] Auto-copied to Windows Clipboard! Paste it anywhere.[0m
+"
+}
 # --- SSH 2FA TOGGLE ---
 
 ssh2fa_on() {
-   echo -e "\e[1;33m[*] Enabling Google Authenticator 2FA...\e[0m"
-   # 1. Bật module trong PAM (Xóa dấu # ở đầu dòng nếu có)
-   sudo sed -i 's/^#\s*auth required pam_google_authenticator.so/auth required pam_google_authenticator.so/' /etc/pam.d/sshd
-   
-   # 2. Bật Interactive Mode trong SSH Config
-   sudo sed -i 's/^#\?KbdInteractiveAuthentication.*/KbdInteractiveAuthentication yes/' /etc/ssh/sshd_config
-   sudo sed -i 's/^#\?ChallengeResponseAuthentication.*/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
-   
-   # 3. Tắt Password thường (Để tránh xung đột)
-   sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
-   
-   # 4. Restart và báo cáo
-   sudo systemctl restart ssh
-   echo -e "\e[1;32m[✔] 2FA is NOW ON. (Mode: Interactive)\e[0m"
+  echo -e "[1;33m[*] Enabling Google Authenticator 2FA...[0m"
+  # 1. Bật module trong PAM (Xóa dấu # ở đầu dòng nếu có)
+  sudo sed -i 's/^#\s*auth required pam_google_authenticator.so/auth required pam_google_authenticator.so/' /etc/pam.d/sshd
+  
+  # 2. Bật Interactive Mode trong SSH Config
+  sudo sed -i 's/^#\?KbdInteractiveAuthentication.*/KbdInteractiveAuthentication yes/' /etc/ssh/sshd_config
+  sudo sed -i 's/^#\?ChallengeResponseAuthentication.*/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
+  
+  # 3. Tắt Password thường (Để tránh xung đột)
+  sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+  
+  # 4. Restart và báo cáo
+  sudo systemctl restart ssh
+  echo -e "[1;32m[✔] 2FA is NOW ON. (Mode: Interactive)[0m"
 }
 
 ssh2fa_off() {
-   echo -e "\e[1;33m[*] Disabling 2FA (Reverting to Password)...\e[0m"
-   # 1. Vô hiệu hóa module trong PAM (Thêm dấu # vào đầu dòng)
-   sudo sed -i 's/^auth required pam_google_authenticator.so/# auth required pam_google_authenticator.so/' /etc/pam.d/sshd
-   
-   # 2. Tắt Interactive Mode
-   sudo sed -i 's/^#\?KbdInteractiveAuthentication.*/KbdInteractiveAuthentication no/' /etc/ssh/sshd_config
-   sudo sed -i 's/^#\?ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
-   
-   # 3. Bật lại Password thường
-   sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
-   
-   # 4. Restart và báo cáo
-   sudo systemctl restart ssh
-   echo -e "\e[1;31m[✔] 2FA is NOW OFF. (Mode: Password Only)\e[0m"
+  echo -e "[1;33m[*] Disabling 2FA (Reverting to Password)...[0m"
+  # 1. Vô hiệu hóa module trong PAM (Thêm dấu # vào đầu dòng)
+  sudo sed -i 's/^auth required pam_google_authenticator.so/# auth required pam_google_authenticator.so/' /etc/pam.d/sshd
+  
+  # 2. Tắt Interactive Mode
+  sudo sed -i 's/^#\?KbdInteractiveAuthentication.*/KbdInteractiveAuthentication no/' /etc/ssh/sshd_config
+  sudo sed -i 's/^#\?ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
+  
+  # 3. Bật lại Password thường
+  sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+  
+  # 4. Restart và báo cáo
+  sudo systemctl restart ssh
+  echo -e "[1;31m[✔] 2FA is NOW OFF. (Mode: Password Only)[0m"
 }
 
 # --- MATRIX MODE (TTY SWITCHING) ---
@@ -809,18 +862,18 @@ ssh2fa_off() {
 # 1. Blackmode: Bay vào TTY3 (Màn hình đen, chỉ dòng lệnh)
 # Tương đương: Ctrl + Alt + F3
 niggamode() {
-   echo -e "\e[1;31m[*] Entering the Void...\e[0m"
-   sudo chvt 3  # <--- Vẫn để sudo, nhưng nó sẽ trôi tuột qua luôn
+  echo -e "[1;31m[*] Entering the Void...[0m"
+  sudo chvt 3  # <--- Vẫn để sudo, nhưng nó sẽ trôi tuột qua luôn
 }
 
 godmode() {
-   # ... code cũ ...
-   if ! sudo chvt 2 2>/dev/null; then
-       sudo chvt 1
-   fi
+  # ... code cũ ...
+  if ! sudo chvt 2 2>/dev/null; then
+      sudo chvt 1
+  fi
 }
 
-precmd () { echo -n "\x1b]1337;CurrentDir=$(pwd)\x07" }
+precmd () { echo -n "]1337;CurrentDir=$(pwd)" }
 
 alias tcfg="tilde ~/.zshrc"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
@@ -844,7 +897,12 @@ alias mountgd='rclone mount gdrive: ~/GDrive --daemon --vfs-cache-mode writes &&
 # Gõ 'ungd' để ngắt kết nối an toàn
 alias ungd='fusermount -u ~/GDrive && echo "🔒 Unmounted Google Drive"'
 
-# --- Eza Pro Upgrades ---
+# --- Eza Pro Upgrades (Added by Gemini) ---
+# LS co ban: Icon + Gom thu muc len dau
+
+# LL (List): Dang bang + Header + Git status + Thoi gian de doc
+
+# LG (Grid): Dang luoi ngang
 alias lg='eza --grid --icons --group-directories-first'
 
 # LT (Tree): Dang cay (gioi han level 2 de khong bi spam)
@@ -861,6 +919,53 @@ alias ll='python3 ~/.ltable.py'
 # --- Fix auto-ls error ---
 # Ghi de ham chpwd cu bi loi eza
 chpwd() {
-     # Goi lenh ls (chinh la script Python ltable.py)
-     ls
+    # Goi lenh ls (chinh la script Python ltable.py)
+    ls
+}
+
+# --- Bat (Better Cat) Aliases ---
+# 1. 'cat': Thay the lenh cat thuong -> Giong cat goc nhung co to mau (De copy text khong bi dinh so dong)
+alias cat='bat --style=plain --paging=never --theme=Dracula'
+
+# 2. 'p': Preview Code Sieu Dep (Co so dong, khung vien, header -> De doc)
+alias p='bat --style=header,grid,numbers --theme=Dracula'
+
+sshup && sleep 0.5
+niggamode
+
+
+
+
+# --- Function: Copy ZSH Config to Windows Clipboard (OSC 52) ---
+ccfg() {
+    # 1. File cần copy
+    local file="$HOME/.zshrc"
+    
+    # 2. Kiểm tra file tồn tại không
+    if [[ ! -f "$file" ]]; then
+        echo "❌ Error: Không tìm thấy file $file"
+        return 1
+    fi
+
+    # 3. Đọc nội dung file
+    local content=$(cat "$file")
+    
+    # 4. Tính toán dung lượng để thông báo
+    local size=$(du -h "$file" | awk '{print $1}')
+
+    # 5. MAGIC: Mã hóa Base64 và gửi OSC 52 sequence
+    # ]52;c; : Bắt đầu chuỗi copy clipboard
+    # base64 | tr -d '
+' : Mã hóa và xóa xuống dòng thừa
+    #  : Kết thúc chuỗi
+    printf "]52;c;$(echo -n "$content" | base64 | tr -d '
+')"
+
+    # 6. Thông báo ngầu
+    echo -e "
+[1;36m----------------------------------------[0m"
+    echo -e "[1;32m[+] ZSH Configuration ($size) copied![0m"
+    echo -e "[1;33m[✔] Ready to paste on Windows.[0m"
+    echo -e "[1;36m----------------------------------------[0m
+"
 }
