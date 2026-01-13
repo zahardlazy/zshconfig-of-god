@@ -3,7 +3,7 @@ import sys
 import datetime
 import stat
 from rich.console import Console
-from rich.table import Table
+from rich.table import Table 
 from rich import box
 from rich.filesize import decimal
 
