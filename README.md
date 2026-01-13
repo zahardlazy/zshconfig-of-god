@@ -1,144 +1,137 @@
-# 🐉 Zahard's Ultimate ZSH Configuration
+# 🐉 Zahard's Ultimate CTF Zsh Configuration
 
-A heavy-duty, highly customized ZSH configuration optimized for **CTF Players**, **Binary Exploitation (Pwn)**, and **Red Teamers**.
+A highly customized **Zsh configuration** designed for **Kali Linux**.
+This setup is optimized for **CTF (Capture The Flag)** players, **Pwn/Reverse Engineers**, and those who appreciate a "Wibu-style" aesthetic with high-performance terminal tools.
 
-This config integrates powerful aliases for binary analysis, web reconnaissance, and system management, wrapped in a beautiful **Oh My Posh** theme.
+## ✨ Key Features
+
+* **Visuals:** Integrated `neofetch` with Sixel image support (Waifu), dynamic `oh-my-posh` theme, and desktop Shimeji pets.
+* **Workflow:** seamless Clipboard synchronization via SSH (OSC 52), smart directory navigation (`zoxide`), and syntax highlighting.
+* **CTF Arsenal:**
+    * **Pwn:** `bininfo` (Auto-analysis), `gdbpwn`, `plzsh` (TTY upgrade).
+    * **Web/Net:** One-liner servers (`webup`, `ftpup`, `smbup`), fast scanning wrappers (`mscanz`).
+    * **Dev:** Virtualenv management (`qvenv`), Docker shortcuts.
 
 ---
 
-## 📦 Installation & Dependencies
+## 📦 1. Prerequisites & Dependencies
 
-To ensure all aliases (like `bininfo`, `ff`, `sshup`) work without errors, follow these setup steps.
+To ensure all aliases and functions work correctly, you must install the following packages.
 
-### 1. Core Shell Environment
-* **Shell:** ZSH (`sudo apt install zsh`)
-* **Framework:** [Oh My Zsh](https://ohmyzsh.github.io/)
-* **Theme:** [Oh My Posh](https://ohmyposh.dev/) (Config: `~/.oh-my-posh/themes/lambdageneration.omp.json`)
-* **Plugins:** `git`, `zsh-autosuggestions`, `zsh-syntax-highlighting`.
+### A. System Packages (APT)
+Run this command to install core utilities, Python environment, and UI tools:
 
-### 2. System Utilities (APT)
-Install the core CLI tools required for file listing, searching, and visuals:
 ```bash
-sudo apt update && sudo apt install -y \
-    bat eza fdfind ripgrep plocate \
-    curl wget git xclip xsel \
-    python3-venv python3-pip ruby-full nodejs \
-    net-tools sshpass proxychains4 xfreerdp \
-    p7zip-full unrar cabextract \
-    thunar wmctrl neofetch
+sudo apt update
+sudo apt install -y zsh git curl wget unzip bat eza fzf ripgrep fd-find \
+    zoxide neofetch wmctrl libsixel-bin python3-venv python3-pip \
+    proxychains4 sshpass xfreerdp net-tools colordiff 7zip unrar cabextract \
+    libnotify-bin xclip
 ```
 
-### 3. Hacking Tools (Kali/APT)
-Standard security tools used in the aliases:
+### B. Python Tools (PIP)
+Install essential libraries for the CTF scripts and visual tools:
+
 ```bash
-sudo apt install -y \
-    nmap masscan gobuster ffuf wpscan \
-    metasploit-framework exploitdb \
-    gdb checksec nasm radare2
+pip install --break-system-packages pyftpdlib impacket wsgidav pwn pwntools \
+    google-generativeai colorama
 ```
 
-### 4. Python Libraries (PIP)
-Required for Pwn and Web tools. Note: `pipz` alias uses `--break-system-packages`.
+### C. Assets (Fonts & Images)
+1.  **Nerd Fonts (Required):** Install [JetBrainsMono Nerd Font](https://www.nerdfonts.com/) to avoid broken icons.
+2.  **Neofetch Image:** Place your desired image at `~/Pictures/NGU1.png`.
+3.  **Themes:** Download `lambdageneration.omp.json` to `~/.oh-my-posh/themes/`.
+
+---
+
+## 🛠️ 2. Installation Guide
+
+### Step 1: Install Zsh Frameworks
 ```bash
-pip install --break-system-packages \
-    pwntools impacket pyftpdlib \
-    wsgidav ropper ropgadget one_gadget
+# 1. Install Oh My Zsh
+sh -c "$(curl -fsSL [https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh](https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh))"
+
+# 2. Install Oh My Posh (Prompt Theme)
+sudo wget [https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64](https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64) -O /usr/local/bin/oh-my-posh
+sudo chmod +x /usr/local/bin/oh-my-posh
+
+# 3. Install Zsh Plugins (Autosuggestions & Highlighting)
+git clone [https://github.com/zsh-users/zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+sudo apt install zsh-syntax-highlighting
 ```
 
-### 5. Custom Tools Layout
-The config expects specific tools in specific folders. Clone these if you want the aliases (`enum4linux`, `pwninit`, `jwt_tool`, etc.) to work:
+### Step 2: Configure Custom Scripts
+This config relies on a custom Python script for `ls` display.
+* **Action:** Ensure you have the `ltable.py` script saved at `~/.ltable.py`.
+* *Alternative:* If you don't have this script, comment out the line `alias ls='python3 ~/.ltable.py'` in the config file.
 
-* **`~/apps/`**: `up-http-tool`, `subbrute`, `tplmap`, `XSStrike`, `EyeWitness`, `jwt_tool`, `android-studio`.
-* **`~/tools/`**: `pwninit-py`.
-* **`~/Desktop/scripts/`**: `enum4linux-ng`, `wesng`.
-* **`./Shijima-Qt/`**: Desktop mascot (Arknights).
-
----
-
-## 🚀 Key Bindings & Navigation
-
-| Shortcut | Function | Description |
-| :--- | :--- | :--- |
-| **Ctrl + F** | `fzf-file-widget` | Insert file path into command line. |
-| **Ctrl + G** | `fzf-cd-widget` | CD into selected directory immediately. |
-| **Ctrl + R** | `fzf-history-widget` | Interactive History Search. |
-| **Ctrl + Q** | **Exit** | Remapped Exit key (replaces `Ctrl+D`). |
-| `c` | **Clear** | Clear screen + Anime Neofetch. |
-| `..` to `.....`| **Up** | Go up 1-4 directory levels. |
-| `mkcd <dir>` | **Make & Go** | Create directory and `cd` into it. |
+### Step 3: Apply the Configuration
+1.  Open your current config: `nano ~/.zshrc`
+2.  Paste the content of **Zahard's Config** into the file.
+3.  Save and reload:
+    ```bash
+    source ~/.zshrc
+    ```
 
 ---
 
-## 🛠️ Command Cheat Sheet
+## 🚀 3. Command Cheatsheet
 
-### 💀 CTF - Pwn & Reverse Engineering (Focus)
+### 🎨 Visual & System
 | Command | Description |
 | :--- | :--- |
-| **`bininfo <bin>`** | **Automated Analysis:** Shows file type, checksec, ldd, and finds offsets for `system`, `/bin/sh`, and `pop rdi` (Binary & Libc). |
-| `gdbpwn <bin>` | Run GDB in quiet mode (`gdb -q`). |
-| `sec` | Run `pwn checksec`. |
-| `tplt` | Generate `exploit.py` template using pwntools. |
-| `pattern_create` | Metasploit pattern create (`-l length`). |
-| `pattern_offset` | Metasploit pattern offset (`-q query`). |
-| `elfxtract` | Run `elfxtract` tool. |
-| `aslr_off` / `on` | Toggle ASLR (Requires sudo). |
-| `gcc_no_prot` | Compile with NO protections (Stack/PIE/NX off). |
-| `xmod` | Auto `chmod +x` all ELF files in current dir. |
-| `ida` / `ghidra` | Launch IDA Pro / Ghidra scripts. |
+| **`c`** | Clear screen + Neofetch (Displays `~/Pictures/NGU1.png` via Sixel). |
+| **`shimeji`** | Spawns Shimeji characters (978, 494...) on your desktop. |
+| **`ccfg`** | Copies the content of `.zshrc` to Windows Clipboard (OSC 52). |
+| **`sshup`** | Copies the SSH connect command for this machine to Windows Clipboard. |
+| **`niggamode`** | **WARNING:** Switches to TTY3 (Black CLI interface). |
+| **`godmode`** | Returns to GUI (TTY2). |
 
-### 🌐 CTF - Web & Network
+### 📂 File Navigation
 | Command | Description |
 | :--- | :--- |
-| `myip` | Show Local (Cyan) & Public (Green) IPs. |
-| `webup` | Python HTTP Server (Port 80). |
-| `ftpup` / `smbup` | Start FTP (21) / SMB Server (Impacket). |
-| `plzsh <port>` | **Reverse Shell Listener:** Spawns listener + upgrades TTY automatically. |
-| `sshup` | **Clipboard Magic:** Copy SSH connect string to Windows Clipboard (OSC52). |
-| `ssh2fa_on` | Enable Google Authenticator 2FA for SSH. |
-| `vpn-htb` | Connect to HackTheBox VPN. |
-| `vpn-thm` | Connect to TryHackMe VPN. |
+| **`ls` / `ll`** | Enhanced list view using `ltable.py` or `eza`. |
+| **`cat` / `p`** | View file content with syntax highlighting (uses `bat` theme Dracula). |
+| **`extract <file>`** | Universal extractor for `.tar`, `.zip`, `.rar`, `.7z`, `.exe`. |
+| **`ff <name>`** | Find files instantly using `fd` + `fzf`. |
+| **`fstr <text>`** | Find text inside files using `ripgrep` + `fzf`. |
+| **`mkcd <dir>`** | Create a directory and `cd` into it immediately. |
 
-### 🔍 Search & Find (Powered by FZF)
+### 💀 CTF: Pwn & Reverse Engineering
 | Command | Description |
 | :--- | :--- |
-| `ff <pattern>` | Find file in current dir (includes **Code Preview**). |
-| `ffa <pattern>` | Find file system-wide (using `locate`). |
-| `fstr <str>` | Find string content **inside** files (Recursive). |
-| `hgrep <str>` | Grep through ZSH history. |
+| **`bininfo <bin>`** | **The Ultimate Analysis Tool:** Checks file type, security protections (Checksec), LDD, and finds offsets for `system`, `/bin/sh`, and `pop rdi` gadget. |
+| **`gdbpwn`** | Launches GDB in quiet mode. |
+| **`plzsh`** | Upgrades a reverse shell to a fully interactive TTY (fixes arrow keys, Ctrl+C). |
+| **`tplt`** | Generates a `pwntools` exploit template. |
+| **`aslr_off`** | Disables ASLR (Address Space Layout Randomization) for debugging. |
 
-### ⚔️ Scanners & Enumeration
+### 🌐 CTF: Web & Network
 | Command | Description |
 | :--- | :--- |
-| `ffuf-dir` | Fuzz directories (Medium wordlist). |
-| `ffuf-vhost` | Fuzz vhosts (Top 1M wordlist). |
-| `wpscanz` | Quick WPScan enumeration. |
-| `mscanz <ip>` | Masscan (Rate 1000). |
-| `qmapz <ip>` | Nmap (`-sV -sC`). |
-| `nse <grep>` | Search Nmap scripts. |
-
-### 💻 Dev & System Utils
-| Command | Description |
-| :--- | :--- |
-| `qvenv` | Create & activate Python `venv`. |
-| `pipz` | `pip install` (ignoring system break error). |
-| `pipz_upgrade` | Upgrade all pip packages. |
-| `installz` | Alias for `sudo apt install -y`. |
-| `docker_run` | Build & run `temp-app` container. |
-| `ramz` | Show RAM usage & Top 10 processes. |
-| `extract` | Universal archive extractor (`.tar`, `.zip`, `.rar`, etc.). |
+| **`webup`** | Starts a Python HTTP Server on port 80. |
+| **`ftpup`** | Starts an anonymous FTP Server on port 21. |
+| **`smbup`** | Starts an SMB Share in the current directory (Impacket). |
+| **`mscanz <ip>`** | Fast full-port scan using Masscan (Rate: 1000). |
+| **`myip`** | Shows Local IP (Cyan) and Public IP (Green). |
+| **`vpn-htb`** | Connects to HackTheBox VPN. |
 
 ---
 
-## ⚙️ Configuration Notes
-> **⚠️ Hardcoded Paths:**
-> This config contains paths specific to the author's machine. Please update `.zshrc` to match your user:
-> * **VPNs:** `/home/crystal/Documents/*.ovpn`
-> * **Tools:** `/home/zahard/apps/...` or `/home/zahard/ida-pro-9.0/`
+## ⚠️ Troubleshooting
 
-## 🎨 Fun Features
-* **`shimeji`**: Spawns Arknights desktop pets (requires Shijima-Qt).
-* **`niggamode`**: Switches to TTY3 (Black screen mode).
-* **`godmode`**: Returns to GUI (TTY2/1).
+1.  **"Command not found: ls"**
+    * **Reason:** You are missing the `~/.ltable.py` script referenced in the config.
+    * **Fix:** Either download the script or remove the alias `alias ls='python3 ~/.ltable.py'` in `.zshrc`.
+
+2.  **Images not showing in Neofetch (`c` command)**
+    * **Reason:** Your terminal emulator does not support **Sixel** graphics.
+    * **Fix:** Use **Konsole**, **WezTerm**, or **Foot**. Standard GNOME Terminal does not support this.
+
+3.  **Clipboard copy (`ccfg`, `sshup`) not working**
+    * **Reason:** These commands use OSC 52 escape sequences.
+    * **Fix:** You must SSH from a client that supports OSC 52, such as **Windows Terminal** or **Tabby**. Putty/MobaXterm may need extra configuration.
 
 ---
-**Author:** Zahard (Mlô)
+*Configuration maintained by Zahard.*
+```
