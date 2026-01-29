@@ -22,11 +22,10 @@ THEME = {
     "date_time": "dim white",
     "symlink": "italic magenta",
     "dir_default": "bold bright_cyan",
-    "file": "bold white", # Fix KeyError
+    "file": "bold white",
 }
 
 # --- 1. SPECIAL FOLDERS (VSCode Material Theme) ---
-# Folder Name -> (Icon, Hex Color)
 FOLDER_MAP = {
     'node_modules': ('', '#E53935'),
     '.git':         ('', '#F44D27'),
@@ -47,10 +46,10 @@ FOLDER_MAP = {
     'img':          ('', '#E040FB'),
     'icons':        ('', '#E040FB'),
     'components':   ('', '#FF9800'),
-    'views':        ('襁', '#FF9800'),
-    'layout':       ('充', '#FF9800'),
-    'routes':       ('麗', '#FF9800'),
-    'router':       ('麗', '#FF9800'),
+    'views':        ('襁', '#FF9800'),
+    'layout':       ('充', '#FF9800'),
+    'routes':       ('麗', '#FF9800'),
+    'router':       ('麗', '#FF9800'),
     'services':     ('ﲀ', '#FF9800'),
     'api':          ('ﲀ', '#FF9800'),
     'utils':        ('', '#FF9800'),
@@ -88,7 +87,6 @@ FOLDER_MAP = {
 
 # --- 2. EXACT FILE NAMES (Priority) ---
 EXACT_FILE_MAP = {
-    # Node / JS
     'package.json':       ('', '#CB3837'),
     'package-lock.json':  ('', '#CB3837'),
     'yarn.lock':          ('', '#2188B6'),
@@ -102,32 +100,26 @@ EXACT_FILE_MAP = {
     'tsconfig.json':      ('', '#3178C6'),
     'jsconfig.json':      ('', '#F1E05A'),
     
-    # Python
     'requirements.txt':   ('', '#3776AB'),
     'pipfile':            ('', '#3776AB'),
     'setup.py':           ('', '#3776AB'),
     'manage.py':          ('', '#3776AB'),
     
-    # PHP / Composer
     'composer.json':      ('', '#8892BE'),
     'composer.lock':      ('', '#8892BE'),
     'artisan':            ('ﳒ', '#FF5722'),
     
-    # Rust / Cargo
     'cargo.toml':         ('', '#DEA584'),
     'cargo.lock':         ('', '#DEA584'),
     
-    # Docker
     'dockerfile':         ('', '#2496ED'),
     'docker-compose.yml': ('', '#2496ED'),
     'docker-compose.yaml':('', '#2496ED'),
     
-    # Git
     '.gitignore':         ('', '#F44D27'),
     '.gitattributes':     ('', '#F44D27'),
     '.gitmodules':        ('', '#F44D27'),
     
-    # Configs
     '.env':               ('', '#FFB74D'),
     '.env.example':       ('', '#FFB74D'),
     '.env.local':         ('', '#FFB74D'),
@@ -150,9 +142,8 @@ EXACT_FILE_MAP = {
     'robots.txt':         ('ﮧ', '#8BC34A'),
 }
 
-# --- 3. EXTENSION MAPPING (Massive) ---
+# --- 3. EXTENSION MAPPING ---
 EXT_MAP = {
-    # Web / JS
     '.html':    ('', '#E34C26'), '.htm': ('', '#E34C26'),
     '.css':     ('', '#1572B6'),
     '.scss':    ('', '#CC6699'), '.sass':('', '#CC6699'),
@@ -163,14 +154,13 @@ EXT_MAP = {
     '.jsx':     ('', '#61DAFB'), '.tsx': ('', '#61DAFB'),
     '.vue':     ('﵂', '#41B883'),
     '.svelte':  ('', '#FF3E00'),
-    '.ang':     ('', '#DD0031'), # Angular
+    '.ang':     ('', '#DD0031'),
     
-    # Languages
     '.py':      ('', '#3776AB'), '.pyc': ('', '#81B2D9'), '.pyd': ('', '#81B2D9'),
     '.java':    ('', '#B07219'), '.class':('', '#B07219'), '.jar': ('', '#B07219'),
     '.c':       ('', '#555555'), '.h':   ('', '#A8B9CC'),
     '.cpp':     ('', '#00599C'), '.hpp': ('', '#A8B9CC'), '.cc':  ('', '#00599C'),
-    '.cs':      ('', '#178600'), # C#
+    '.cs':      ('', '#178600'),
     '.go':      ('', '#00ADD8'),
     '.rs':      ('', '#DEA584'), '.rlib':('', '#DEA584'),
     '.php':     ('', '#4F5D95'),
@@ -182,13 +172,12 @@ EXT_MAP = {
     '.dart':    ('', '#01579B'),
     '.r':       ('ﳒ', '#276DC3'),
     '.scala':   ('', '#DC322F'),
-    '.f':       ('ﳒ', '#734F96'), # Fortran
-    '.clj':     ('', '#5881D8'), # Clojure
-    '.ex':      ('', '#6E4A7E'), # Elixir
+    '.f':       ('ﳒ', '#734F96'),
+    '.clj':     ('', '#5881D8'),
+    '.ex':      ('', '#6E4A7E'),
     
-    # Data / Config
     '.json':    ('', '#FBC02D'), '.jsonc':('', '#FBC02D'),
-    '.xml':     ('謹', '#FF9800'),
+    '.xml':     ('謹', '#FF9800'),
     '.yaml':    ('', '#AA2EEB'), '.yml': ('', '#AA2EEB'),
     '.toml':    ('', '#9C4221'),
     '.ini':     ('', '#6D8086'), '.conf':('', '#6D8086'), '.cfg':('', '#6D8086'),
@@ -197,7 +186,6 @@ EXT_MAP = {
     '.csv':     ('', '#8BC34A'),
     '.log':     ('', '#FFFFFF'),
     
-    # Shell / Exec
     '.sh':      ('', '#89E051'),
     '.bash':    ('', '#89E051'),
     '.zsh':     ('', '#89E051'),
@@ -211,15 +199,13 @@ EXT_MAP = {
     '.elf':     ('', '#FF5252'),
     '.dll':     ('', '#90A4AE'), '.so':  ('', '#90A4AE'),
     
-    # Security / Kali
     '.pcap':    ('', '#26A69A'), '.pcapng':('', '#26A69A'),
     '.pem':     ('', '#E91E63'), '.key':   ('', '#E91E63'),
     '.pub':     ('', '#E91E63'),
     '.crt':     ('﫮', '#E91E63'), '.cer':   ('﫮', '#E91E63'),
     '.apk':     ('', '#3DDC84'),
-    '.nse':     ('什', '#D32F2F'),
+    '.nse':     ('什', '#D32F2F'),
     
-    # Docs
     '.md':      ('', '#FFFFFF'),
     '.txt':     ('', '#AEBBC9'),
     '.pdf':     ('', '#B30B00'),
@@ -227,7 +213,6 @@ EXT_MAP = {
     '.xls':     ('', '#207245'), '.xlsx':('', '#207245'),
     '.ppt':     ('', '#CB4A32'), '.pptx':('', '#CB4A32'),
     
-    # Media
     '.png':     ('', '#42A5F5'), '.jpg': ('', '#42A5F5'), '.jpeg':('', '#42A5F5'),
     '.gif':     ('', '#EA4335'), '.webp':('', '#42A5F5'),
     '.svg':     ('ﰟ', '#FFB300'),
@@ -235,10 +220,8 @@ EXT_MAP = {
     '.mp4':     ('', '#FF6F00'), '.mkv': ('', '#FF6F00'), '.mov': ('', '#FF6F00'),
     '.mp3':     ('', '#9575CD'), '.wav': ('', '#9575CD'), '.flac':('', '#9575CD'),
     
-    # Fonts
     '.ttf':     ('', '#FF5252'), '.otf': ('', '#FF5252'), '.woff':('', '#FF5252'),
     
-    # Archives
     '.zip':     ('', '#FBC02D'), '.rar': ('', '#FBC02D'), '.7z': ('', '#FBC02D'),
     '.tar':     ('', '#FBC02D'), '.gz':  ('', '#FBC02D'),
     '.iso':     ('', '#BDBDBD'),
@@ -269,8 +252,9 @@ def get_linux_perms_4part(mode):
         res += "[bold green]r[/]" if r else "[dim grey30]-[/]"
         res += "[bold red]w[/]" if w else "[dim grey30]-[/]"
         if s:
-            if x: res += f"[bold white on red]{char_s}[/]"
-            else: res += f"[bold red on white]{char_S}[/]"
+            # FIX: Only RED TEXT, NO BACKGROUND
+            if x: res += f"[bold red]{char_s}[/]"
+            else: res += f"[bold red]{char_S}[/]"
         else:
             res += "[bold yellow]x[/]" if x else "[dim grey30]-[/]"
         return res
@@ -379,3 +363,4 @@ try:
     console.print(table)
 except Exception as e:
     console.print(f"[red]Error: {e}[/]")
+EOF
